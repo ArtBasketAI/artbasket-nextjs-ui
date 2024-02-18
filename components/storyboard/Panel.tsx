@@ -32,12 +32,12 @@ const StoryBoardPanel: React.FC<StoryBoardPanelProps> = ({
     };
 
     return (
-        <div className="panel-container overflow-hidden"> {/* Add overflow-hidden here */}
+        <div className="panel-container overflow-hidden">
             <Resizable
                 size={size}
                 onResizeStop={handleResizeStop}
                 enable={{ top: false, right: true, bottom: true, left: false, topRight: false, bottomRight: true, bottomLeft: false, topLeft: false }}
-                className={`border-2 p-2 ${isEditing ? 'border-dashed' : 'border-solid'} hover:shadow-lg`}
+                className={`border-2 p-2 ${isEditing ? 'border-dashed' : 'border-solid'} hover:shadow-lg hover:border-blue-500`}
             >
                 {isEditing ? (
                     <div className="edit-mode">
@@ -59,7 +59,7 @@ const StoryBoardPanel: React.FC<StoryBoardPanelProps> = ({
                 ) : (
                     <div className="view-mode" onDoubleClick={() => setIsEditing(true)}>
                         <p>{content}</p>
-                        {imageUrl && <img src={imageUrl} alt={`Panel ${id}`} className="max-w-full max-h-full object-contain" />}
+                        {imageUrl && <img src={imageUrl} alt={`Panel ${id}`} className="max-w-full max-h-full object-contain pb-2" />}
                     </div>
                 )}
             </Resizable>
