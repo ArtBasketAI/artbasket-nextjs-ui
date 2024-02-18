@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Resizable } from 're-resizable';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 interface StoryBoardPanelProps {
     id: number;
@@ -66,7 +67,7 @@ const StoryBoardPanel: React.FC<StoryBoardPanelProps> = ({
                 ) : (
                     <div className="view-mode" onDoubleClick={() => setIsEditing(true)}>
                         <div className="image-container absolute inset-0">
-                            {imageUrl && <img src={imageUrl} alt={`Panel ${id}`} className="w-full h-full object-cover opacity-50" />}
+                                {imageUrl && <Image src={imageUrl} alt={`Panel ${id}`} width={500} height={300} className="w-full h-full object-cover opacity-50" />}
                         </div>
                         <p className="relative z-10">{content}</p>
                     </div>
