@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Add this to your global CSS file */
+.button {
+    @apply bg-blue-500 text-white py-2 px-4 rounded transition duration-150 ease-in-out;
+}
+
+.button:hover {
+    @apply bg-blue-600 shadow-lg;
+}
+
+.button:disabled {
+    @apply bg-gray-400;
+}

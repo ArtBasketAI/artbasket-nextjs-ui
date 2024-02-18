@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import StoryBoardPanel from '../components/storyboard/Panel';
 
-// Assuming you have defined your Panel and PageData interfaces somewhere
 interface Panel {
     id: number;
     content: string;
+    imageUrl?: string; // Optional if you have images
 }
 
 interface PageData {
@@ -15,107 +16,98 @@ interface PageData {
 const Storyboarding = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [pagesData, setPagesData] = useState<PageData[]>([]);
+    const [currentStory, setCurrentStory] = useState<string>('');
     const router = useRouter();
 
-    // Convert comicPages to a number since query parameters are strings by default
     const comicPages = Number(router.query.comicPages) || 10;
 
     useEffect(() => {
         const fetchPagesData = async () => {
             try {
-                // Log the request for debugging
-                console.log(`Fetching data for ${comicPages} pages.`);
-
                 const response = await fetch(`http://localhost:3001/api/comic/storyboard?pages=${comicPages}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
                 setPagesData(data.pagesData);
-
-                // Log the response data
-                console.log('Data fetched:', data.pagesData);
+                setCurrentStory(data.pagesData[currentPage - 1]?.story || '');
             } catch (error) {
                 console.error("Fetching pages data failed: ", error);
             }
         };
 
-        fetchPagesData();
-    }, [comicPages]);
-
-    // Check for data and if currentPage is within the valid range
-    useEffect(() => {
-        if (pagesData.length > 0) {
-            setCurrentPage(current => Math.max(1, Math.min(current, pagesData.length)));
+        if (router.isReady) {
+            fetchPagesData();
         }
-    }, [pagesData]);
+    }, [router.isReady, comicPages, currentPage]);
 
-    // Early return if the data is still loading
-    if (!pagesData.length) {
-        return <p>Loading...</p>; // Provide a loading state
-    }
-
-    // Safely access the current page data
-    const pageData = pagesData[currentPage - 1];
-    const { story, panels } = pageData;
-
-    // Handlers for page navigation
-    const handlePreviousPage = () => setCurrentPage(current => Math.max(current - 1, 1));
-    const handleNextPage = () => setCurrentPage(current => Math.min(current + 1, pagesData.length));
-
-    // Handler to initiate storyboarding (placeholder for your logic)
-    const handleVisualize = () => {
-        // You can implement the logic to transition to the next step here
-        // For now, just logging to the console
-        console.log('Visualizing...');
+    const handleSavePanelData = (id: number, newContent: string, newImageUrl: string, newSize: { width: number; height: number }) => {
+        const updatedPagesData = pagesData.map((page, pageIndex) => {
+            if (pageIndex === currentPage - 1) {
+                return {
+                    ...page,
+                    panels: page.panels.map(panel =>
+                        panel.id === id ? { ...panel, content: newContent } : panel
+                    )
+                };
+            }
+            return page;
+        });
+        setPagesData(updatedPagesData);
     };
+
+    const handlePreviousPage = () => {
+        setCurrentPage((prev) => Math.max(prev - 1, 1));
+    };
+
+    const handleNextPage = () => {
+        setCurrentPage((prev) => Math.min(prev + 1, comicPages));
+    };
+
+    // Diagnostics: Log currentPage and pagesData for debugging
+    console.log('Current Page:', currentPage);
+    console.log('Pages Data:', pagesData);
+
+    const handleVisualize = () => {
+        // Logic for the Visualize button
+    };
+
+    if (!pagesData.length) {
+        return <p>Loading...</p>;
+    }
 
     return (
         <div className="container mx-auto p-4">
-            <div className="flex justify-between items-center mb-4">
-                <button
-                    onClick={handlePreviousPage}
-                    disabled={currentPage === 1}
-                    className={`px-4 py-2 rounded ${currentPage === 1 ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600 hover:shadow-lg'}`}
-                >
-                    Previous Page
-                </button>
-                <span>Page {currentPage} of {pagesData.length}</span>
-                <button
-                    onClick={handleNextPage}
-                    disabled={currentPage === pagesData.length}
-                    className={`px-4 py-2 rounded ${currentPage === pagesData.length ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600 hover:shadow-lg'}`}
-                >
-                    Next Page
-                </button>
+            <div className="flex justify-between mb-4">
+                <button onClick={handlePreviousPage} disabled={currentPage === 1} className="button">Previous Page</button>
+                <button onClick={handleNextPage} disabled={currentPage === comicPages} className="button">Next Page</button>
             </div>
-            <div className="flex">
-                <div className="w-1/2 p-4">
-                    <h2 className="text-xl font-bold mb-4">Story</h2>
-                    <p>{story}</p>
-                </div>
-                <div className="w-1/2 p-4">
-                    <h2 className="text-xl font-bold mb-4">Storyboard Panels</h2>
-                    {panels.map((panel) => (
-                        <div key={panel.id} className="p-4 border border-gray-300 mb-4">
-                            {panel.content}
-                        </div>
+            <div className="mb-4">
+                <h2 className="text-xl font-bold">Page Story Summary</h2>
+                <textarea
+                    className="w-full p-2 border border-gray-300 rounded"
+                    value={currentStory}
+                    onChange={(e) => setCurrentStory(e.target.value)}
+                    rows={4}
+                />
+            </div>
+            <div className="mb-4">
+                <h2 className="text-xl font-bold">Storyboard Panels</h2>
+                <div className="flex flex-wrap gap-4"> {/* Removed overflow-auto */}
+                    {pagesData[currentPage - 1].panels.map((panel) => (
+                        <StoryBoardPanel
+                            key={panel.id}
+                            id={panel.id}
+                            initialContent={panel.content}
+                            initialImageUrl={panel.imageUrl || '/assets/landscape.webp'}
+                            onSave={handleSavePanelData}
+                        />
                     ))}
                 </div>
             </div>
-            <div className="flex justify-between items-center mt-4">
-                <button
-                    onClick={() => router.push('/create/comic')}
-                    className="px-4 py-2 rounded bg-green-500 hover:bg-green-600 hover:shadow-lg"
-                >
-                    Back to Project Home
-                </button>
-                <button
-                    onClick={handleVisualize}
-                    className="px-4 py-2 rounded bg-purple-500 hover:bg-purple-600 hover:shadow-lg animate-pulse"
-                >
-                    Visualize
-                </button>
+            <div className="flex justify-between">
+                <button onClick={() => router.push('/create/comic')} className="button">Back to Comic Create</button>
+                <button onClick={handleVisualize} className="button">Visualize</button>
             </div>
         </div>
     );
