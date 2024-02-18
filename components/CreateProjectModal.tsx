@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 const CreateProjectModal = ({ isOpen, onClose }) => {
     const [step, setStep] = useState(1);
@@ -17,12 +18,13 @@ const CreateProjectModal = ({ isOpen, onClose }) => {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-8 rounded-lg w-1/2 h-3/4 overflow-auto">
-                <h2 className="text-2xl font-bold text-center mb-4">Let's Create Something Amazing!</h2>
+                <h2 className="text-2xl font-bold text-center mb-4">Let&apos;s Create Something Amazing!</h2>
                 {step === 1 && (
                     <div className="text-center">
-                        <img
+                        <Image
                             src="/assets/abdalle.png" // Replace with the path to your image
                             alt="Exciting project"
+                            width={500} height={300}
                             className="w-full h-64 object-cover mb-4"
                         />
                         <label htmlFor="projectTitle" className="block mb-2">Project Title:</label>
@@ -44,9 +46,10 @@ const CreateProjectModal = ({ isOpen, onClose }) => {
                                 onClick={() => setProjectType('story')}
                                 className={`cursor-pointer p-2 rounded border-2 ${projectType === 'story' ? 'border-blue-700' : 'border-gray-300'}`}
                             >
-                                <img
+                                <Image
                                     src="/assets/story.png"
                                     alt="Begin a Story"
+                                    width={500} height={300}
                                     className={`w-24 h-24 object-cover ${projectType === 'story' ? '' : 'grayscale'}`}
                                 />
                             </div>
@@ -54,9 +57,10 @@ const CreateProjectModal = ({ isOpen, onClose }) => {
                                 onClick={() => setProjectType('comic')}
                                 className={`cursor-pointer p-2 rounded border-2 ${projectType === 'comic' ? 'border-blue-700' : 'border-gray-300'}`}
                             >
-                                <img
+                                <Image
                                     src="/assets/manga.webp"
                                     alt="Begin a Comic"
+                                    width={500} height={300}
                                     className={`w-24 h-24 object-cover ${projectType === 'comic' ? '' : 'grayscale'}`}
                                 />
                             </div>
@@ -64,9 +68,10 @@ const CreateProjectModal = ({ isOpen, onClose }) => {
                                 onClick={() => setProjectType('video')}
                                 className={`cursor-pointer p-2 rounded border-2 ${projectType === 'video' ? 'border-blue-700' : 'border-gray-300'}`}
                             >
-                                <img
+                                <Image
                                     src="/assets/video.webp"
                                     alt="Begin a Video Clips"
+                                    width={500} height={300}
                                     className={`w-24 h-24 object-cover ${projectType === 'video' ? '' : 'grayscale'}`}
                                 />
                             </div>

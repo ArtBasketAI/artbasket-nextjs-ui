@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import Image from 'next/image';
 
 const Navbar = () => {
     const router = useRouter(); // Initialize the router
@@ -47,9 +48,10 @@ const Navbar = () => {
                             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                             className="flex items-center text-white cursor-pointer"
                         >
-                            <img
+                            <Image
                                 src="/assets/avatar.png"
                                 alt="User avatar"
+                                width={500} height={300}
                                 className="w-8 h-8 rounded-full"
                             />
                             <span>Username</span> {/* Replace with the actual username */}

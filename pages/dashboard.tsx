@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import router from 'next/router';
 import CreateProjectModal from '../components/CreateProjectModal';
+import Image from 'next/image';
 
 // Define the shape of a project
 interface Project {
@@ -45,7 +46,7 @@ const Dashboard = () => {
                 {/* Project tiles */}
                 {projects.map((project) => (
                     <div key={project.id} className="flex flex-col bg-white shadow rounded p-2" style={{ width: '160px', height: '280px' }}>
-                        <img src={project.imageUrl} alt={project.title} style={{ height: '150px', objectFit: 'cover' }} />
+                        <Image src={project.imageUrl} alt={project.title} width={500} height={300} style={{ height: '150px', objectFit: 'cover' }} />
                         <h2 className="text-lg mt-2 text-center">{project.title}</h2>
                     </div>
                 ))}
