@@ -1,20 +1,29 @@
-import { LoginForm } from '../components/auth/LoginForm'; // Assuming LoginForm is already styled or will use global styles
+// pages/index.tsx
 import { useRouter } from 'next/router';
+import Login from '../components/Login';
+import { useAuth } from '../context/AuthContext';
 
-export default function LoginPage() {
+const Home = () => {
     const router = useRouter();
+    const { login } = useAuth();
 
-    const handleLoginSuccess = () => {
-        router.push('/dashboard'); // Redirect on successful login
+    const handleLoginSuccess = (user) => {
+        // Perform the login action
+        login();
+        // Redirect to dashboard or handle logged-in user
+        console.log('Logged in user:', user);
+        router.push('/dashboard');
     };
 
     return (
-        <div className="login-container">
-            <div className="login-form">
-                <h1>Login</h1>
-                <LoginForm onLoginSuccess={handleLoginSuccess} />
-                {/* LoginForm needs to follow the same pattern of using global styles */}
+        <div className="flex justify-center items-center min-h-screen">
+            <div className="max-w-md mr-10">
+                <h1 className="text-4xl font-bold text-center">Welcome to ArtBasketAI</h1>
+                <p className="text-center mt-4">Your co-pilot for streamlining content creation.</p>
             </div>
+            <Login onLoginSuccess={handleLoginSuccess} />
         </div>
     );
-}
+};
+
+export default Home;

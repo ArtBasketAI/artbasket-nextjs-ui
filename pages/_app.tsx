@@ -1,12 +1,20 @@
-import { AppProps } from 'next/app';
+// pages/_app.tsx
 import '../styles/globals.css';
-import { NavBar } from '../components/common/NavBar';
+import type { AppProps } from 'next/app';
+import { AuthProvider } from '../context/AuthContext';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
         <>
-            <NavBar />
-            <Component {...pageProps} />
+            <AuthProvider>
+            <Navbar />
+            <main>
+                <Component {...pageProps} />
+            </main>
+            <Footer />
+            </AuthProvider>
         </>
     );
 }
