@@ -47,7 +47,7 @@ const Storyboarding = () => {
                 return {
                     ...page,
                     panels: page.panels.map(panel =>
-                        panel.id === id ? { ...panel, content: newContent } : panel
+                        panel.id === id ? { ...panel, content: newContent, imageUrl: newImageUrl } : panel
                     )
                 };
             }
@@ -64,12 +64,9 @@ const Storyboarding = () => {
         setCurrentPage((prev) => Math.min(prev + 1, comicPages));
     };
 
-    // Diagnostics: Log currentPage and pagesData for debugging
-    console.log('Current Page:', currentPage);
-    console.log('Pages Data:', pagesData);
-
     const handleVisualize = () => {
         // Logic for the Visualize button
+        console.log('Visualize button clicked');
     };
 
     if (!pagesData.length) {
@@ -93,10 +90,10 @@ const Storyboarding = () => {
             </div>
             <div className="mb-4">
                 <h2 className="text-xl font-bold">Storyboard Panels</h2>
-                <div className="flex flex-wrap gap-4"> {/* Removed overflow-auto */}
+                <div className="flex flex-wrap gap-4">
                     {pagesData[currentPage - 1].panels.map((panel) => (
                         <StoryBoardPanel
-                            key={panel.id}
+                            key={`${currentPage}-${panel.id}`} // Unique key for each panel based on the current page and panel id
                             id={panel.id}
                             initialContent={panel.content}
                             initialImageUrl={panel.imageUrl || '/assets/landscape.webp'}

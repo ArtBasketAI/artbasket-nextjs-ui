@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Resizable } from 're-resizable';
+import { useRouter } from 'next/router';
 
 interface StoryBoardPanelProps {
     id: number;
@@ -19,6 +20,8 @@ const StoryBoardPanel: React.FC<StoryBoardPanelProps> = ({
     const [imageUrl, setImageUrl] = useState(initialImageUrl);
     const [size, setSize] = useState({ width: 300, height: 200 });
 
+    const router = useRouter();
+
     const handleSave = () => {
         onSave(id, content, imageUrl, size);
         setIsEditing(false);
@@ -31,8 +34,12 @@ const StoryBoardPanel: React.FC<StoryBoardPanelProps> = ({
         }));
     };
 
+    const handleClick = () => {
+        router.push(`/panel-editor?id=${id}`);
+    };
+
     return (
-        <div className="panel-container overflow-hidden">
+        <div className="panel-container overflow-hidden relative" onClick={handleClick}>
             <Resizable
                 size={size}
                 onResizeStop={handleResizeStop}
@@ -58,8 +65,10 @@ const StoryBoardPanel: React.FC<StoryBoardPanelProps> = ({
                     </div>
                 ) : (
                     <div className="view-mode" onDoubleClick={() => setIsEditing(true)}>
-                        <p>{content}</p>
-                        {imageUrl && <img src={imageUrl} alt={`Panel ${id}`} className="max-w-full max-h-full object-contain pb-2" />}
+                        <div className="image-container absolute inset-0">
+                            {imageUrl && <img src={imageUrl} alt={`Panel ${id}`} className="w-full h-full object-cover opacity-50" />}
+                        </div>
+                        <p className="relative z-10">{content}</p>
                     </div>
                 )}
             </Resizable>
