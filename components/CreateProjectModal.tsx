@@ -12,7 +12,10 @@ const CreateProjectModal = ({ isOpen, onClose }) => {
 
     const handleCreateProject = () => {
         onClose(); // Close the modal
-        router.push(`/create/${projectType}`); // Redirect to the specific creation page
+        router.push({
+            pathname: `/create/${projectType}`,
+            query: { title: projectTitle }, // Pass the project title as a query parameter
+        });
     };
 
     return (

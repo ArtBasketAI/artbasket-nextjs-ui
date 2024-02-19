@@ -2,6 +2,7 @@
 import { useRouter } from 'next/router';
 import Login from '../components/Login';
 import { useAuth } from '../context/AuthContext';
+import Navbar from '../components/Navbar';
 
 const Home = () => {
     const router = useRouter();
@@ -16,6 +17,8 @@ const Home = () => {
     };
 
     return (
+        <>
+        <Navbar />
         <div className="flex justify-center items-center min-h-screen">
             <div className="max-w-md mr-10">
                 <h1 className="text-4xl font-bold text-center">Welcome to ArtBasketAI</h1>
@@ -23,6 +26,7 @@ const Home = () => {
             </div>
             <Login onLoginSuccess={handleLoginSuccess} />
         </div>
+        </>
     );
 };
 

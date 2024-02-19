@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import router from 'next/router';
 import CreateProjectModal from '../components/CreateProjectModal';
 import Image from 'next/image';
+import Navbar from '../components/Navbar';
 
 // Define the shape of a project
 interface Project {
@@ -15,6 +16,11 @@ const Dashboard = () => {
     const [projects, setProjects] = useState<Project[]>([]);
     const { isLoggedIn } = useAuth();
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+    // Define breadcrumbs for the Dashboard page
+    const breadcrumbs = [
+        { label: 'Dashboard', href: '/dashboard' }
+    ];
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -32,6 +38,8 @@ const Dashboard = () => {
     }, [isLoggedIn]);
 
     return (
+        <>
+        <Navbar breadcrumbs={breadcrumbs} />
         <div className="p-8">
             <h1 className="text-2xl font-bold mb-8">Dashboard</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -56,6 +64,7 @@ const Dashboard = () => {
                 onClose={() => setIsCreateModalOpen(false)}
             />
         </div>
+        </>
     );
 
 };

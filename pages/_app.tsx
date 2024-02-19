@@ -9,7 +9,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     return (
         <>
             <AuthProvider>
-            <Navbar />
             <main>
                 <Component {...pageProps} />
             </main>
