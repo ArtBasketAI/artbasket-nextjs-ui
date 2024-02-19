@@ -20,7 +20,7 @@ const CreateProjectModal = ({ isOpen, onClose }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-8 rounded-lg w-1/2 h-3/4 overflow-auto">
+            <div className="bg-white p-8 rounded-lg w-1/2 h-3/4 overflow-auto relative">
                 <h2 className="text-2xl font-bold text-center mb-4">Let&apos;s Create Something Amazing!</h2>
                 {step === 1 && (
                     <div className="text-center">
@@ -38,54 +38,58 @@ const CreateProjectModal = ({ isOpen, onClose }) => {
                             onChange={(e) => setProjectTitle(e.target.value)}
                             className="mb-4 p-2 w-full border border-gray-300 rounded"
                         />
-                        <button onClick={() => setStep(2)} className="bg-blue-500 text-white p-2 rounded">Next</button>
+                        <div className="flex justify-between">
+                            <button onClick={onClose} className="bg-red-500 text-white p-2 rounded">Close</button> {/* Moved Close button */}
+                            <button onClick={() => setStep(2)} className="bg-blue-500 text-white p-2 rounded">Next</button>
+                        </div>
                     </div>
                 )}
                 {step === 2 && (
                     <div className="text-center">
                         <label className="block mb-2">Project Type:</label>
                         <div className="flex justify-center space-x-4 mb-4">
+                            {/* Increase image size and add hover effects */}
                             <div
                                 onClick={() => setProjectType('story')}
-                                className={`cursor-pointer p-2 rounded border-2 ${projectType === 'story' ? 'border-blue-700' : 'border-gray-300'}`}
+                                className={`cursor-pointer p-4 rounded border-2 ${projectType === 'story' ? 'border-blue-700' : 'border-gray-300'} hover:border-blue-500 transition duration-300`}
                             >
                                 <Image
                                     src="/assets/story.png"
                                     alt="Begin a Story"
-                                    width={500} height={300}
-                                    className={`w-24 h-24 object-cover ${projectType === 'story' ? '' : 'grayscale'}`}
+                                    width={100} height={100}
+                                    className={`w-32 h-32 object-cover ${projectType === 'story' ? '' : 'grayscale'} hover:scale-110 transition duration-300`}
                                 />
                             </div>
                             <div
                                 onClick={() => setProjectType('comic')}
-                                className={`cursor-pointer p-2 rounded border-2 ${projectType === 'comic' ? 'border-blue-700' : 'border-gray-300'}`}
+                                className={`cursor-pointer p-4 rounded border-2 ${projectType === 'comic' ? 'border-blue-700' : 'border-gray-300'} hover:border-blue-500 transition duration-300`}
                             >
                                 <Image
                                     src="/assets/manga.webp"
                                     alt="Begin a Comic"
-                                    width={500} height={300}
-                                    className={`w-24 h-24 object-cover ${projectType === 'comic' ? '' : 'grayscale'}`}
+                                    width={100} height={100}
+                                    className={`w-32 h-32 object-cover ${projectType === 'comic' ? '' : 'grayscale'} hover:scale-110 transition duration-300`}
                                 />
                             </div>
                             <div
                                 onClick={() => setProjectType('video')}
-                                className={`cursor-pointer p-2 rounded border-2 ${projectType === 'video' ? 'border-blue-700' : 'border-gray-300'}`}
+                                className={`cursor-pointer p-4 rounded border-2 ${projectType === 'video' ? 'border-blue-700' : 'border-gray-300'} hover:border-blue-500 transition duration-300`}
                             >
                                 <Image
                                     src="/assets/video.webp"
                                     alt="Begin a Video Clips"
-                                    width={500} height={300}
-                                    className={`w-24 h-24 object-cover ${projectType === 'video' ? '' : 'grayscale'}`}
+                                    width={100} height={100}
+                                    className={`w-32 h-32 object-cover ${projectType === 'video' ? '' : 'grayscale'} hover:scale-110 transition duration-300`}
                                 />
                             </div>
                         </div>
-                        <button onClick={handleCreateProject} className="bg-green-500 text-white p-2 rounded">Create</button>
-                        <button onClick={() => setStep(1)} className="bg-gray-300 text-black p-2 rounded ml-2">Back</button>
+                        <div className="flex justify-between">
+                            <button onClick={onClose} className="bg-red-500 text-white p-2 rounded">Close</button>
+                            <button onClick={() => setStep(1)} className="bg-gray-300 text-black p-2 rounded">Back</button> {/* Centered Back button */}
+                            <button onClick={handleCreateProject} className="bg-green-500 text-white p-2 rounded">Create</button>
+                        </div>
                     </div>
                 )}
-
-
-                <button onClick={onClose} className="absolute top-4 right-4 bg-red-500 text-white p-2 rounded">Close</button>
             </div>
         </div>
     );
