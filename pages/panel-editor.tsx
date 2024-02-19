@@ -1,19 +1,28 @@
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
-import StoryBoardPanel from '../components/storyboard/Panel';
+import Image from 'next/image';
+
+interface PanelData {
+    id: number;
+    content: string;
+    imageUrl: string;
+    tags: string;
+    style: string;
+    characters: string;
+}
 
 const PanelEditor = () => {
     const router = useRouter();
-    const { id, title, storyId } = router.query;
+    const { id, title, storyId, comicPages } = router.query;
 
-    // Example state for panel details - these would be fetched based on the panel ID
-    const [panelData, setPanelData] = useState({
+    const [panelData, setPanelData] = useState<PanelData>({
+        id: 0,
         content: '',
         imageUrl: '',
         tags: '',
         style: '',
-        characters: ''
+        characters: '',
     });
 
     useEffect(() => {
@@ -25,6 +34,7 @@ const PanelEditor = () => {
                 }
                 const data = await response.json();
                 setPanelData(data);
+                console.log('Image URL:', data.imageUrl); // Log the image URL
             } catch (error) {
                 console.error("Fetching panel data failed: ", error);
             }
@@ -36,10 +46,11 @@ const PanelEditor = () => {
     }, [id]);
 
     const handleRegenerate = () => {
-        // Logic to regenerate the panel based on the updated details
         console.log('Regenerate button clicked');
         // Add your logic here
     };
+
+
 
     return (
         <>
@@ -48,8 +59,8 @@ const PanelEditor = () => {
                     { label: 'Dashboard', href: '/dashboard' },
                     { label: title as string, href: `/create/comic?title=${title}` },
                     { label: 'Story Details', href: `/story/details?storyId=${storyId}&title=${title}` },
-                    { label: 'Storyboarding', href: `/storyboarding?storyId=${storyId}&title=${title}` },
-                    { label: `Panel ${id}`, href: `/panel-editor?id=${id}&title=${title}&storyId=${storyId}` },
+                    { label: 'Storyboarding', href: `/storyboarding?storyId=${storyId}&title=${title}&comicPages=${comicPages}` },
+                    { label: `Panel ${id}`, href: `/panel-editor?id=${id}&title=${title}&storyId=${storyId}&comicPages=${comicPages}` },
                 ]}
             />
             <div className="container mx-auto p-4">
@@ -63,6 +74,18 @@ const PanelEditor = () => {
                         className="w-full p-2 border border-gray-300 rounded"
                         rows={4}
                     />
+                </div>
+                <div className="mb-4">
+                    <h2 className="text-xl font-bold">Panel Image</h2>
+                    <div className="image-container p-4 border border-gray-400 rounded-lg shadow"> {/* Add padding, border, and shadow */}
+                        <Image
+                            src={panelData.imageUrl}
+                            alt={`Panel ${id} Image`}
+                            width={500} // Adjust the width as needed
+                            height={500} // Adjust the height as needed
+                            className="object-cover"
+                        />
+                    </div>
                 </div>
                 <div className="mb-4">
                     <label htmlFor="imageUrl" className="block mb-2">Image URL:</label>
@@ -105,7 +128,16 @@ const PanelEditor = () => {
                     />
                 </div>
                 <div className="flex justify-between">
-                    <button onClick={() => router.push('/storyboarding')} className="button">Back to Storyboarding</button>
+                    <button
+                        onClick={() => router.push({
+                            pathname: '/storyboarding',
+                            query: { storyId, title, comicPages }, // Include the necessary query parameters
+                        })}
+                        className="button"
+                    >
+                        Back to Storyboarding
+                    </button>
+
                     <button onClick={handleRegenerate} className="button">Regenerate</button>
                 </div>
             </div>

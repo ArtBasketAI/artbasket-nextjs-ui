@@ -7,6 +7,8 @@ interface StoryBoardPanelProps {
     id: number;
     initialContent: string;
     initialImageUrl: string;
+    title: string; // Add this line for breadcrumbs
+    storyId: string; // Add this line for breadcrumbs
     onSave: (id: number, newContent: string, newImageUrl: string, newSize: { width: number; height: number }) => void;
 }
 
@@ -14,6 +16,8 @@ const StoryBoardPanel: React.FC<StoryBoardPanelProps> = ({
     id,
     initialContent,
     initialImageUrl,
+    title,
+    storyId,
     onSave,
 }) => {
     const [isEditing, setIsEditing] = useState(false);
@@ -36,7 +40,10 @@ const StoryBoardPanel: React.FC<StoryBoardPanelProps> = ({
     };
 
     const handleClick = () => {
-        router.push(`/panel-editor?id=${id}`);
+        router.push({
+            pathname: '/panel-editor',
+            query: { id, title, storyId }, // Pass the additional breadcrumb values
+        });
     };
 
     return (
@@ -67,7 +74,7 @@ const StoryBoardPanel: React.FC<StoryBoardPanelProps> = ({
                 ) : (
                     <div className="view-mode" onDoubleClick={() => setIsEditing(true)}>
                         <div className="image-container absolute inset-0">
-                                {imageUrl && <Image src={imageUrl} alt={`Panel ${id}`} width={500} height={300} className="w-full h-full object-cover opacity-50" />}
+                            {imageUrl && <Image src={imageUrl} alt={`Panel ${id}`} width={500} height={300} className="w-full h-full object-cover opacity-50" />}
                         </div>
                         <p className="relative z-10">{content}</p>
                     </div>

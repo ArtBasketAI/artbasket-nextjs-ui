@@ -105,10 +105,12 @@ const Storyboarding = () => {
                     <div className="flex flex-wrap gap-4">
                         {pagesData[currentPage - 1].panels.map((panel) => (
                             <StoryBoardPanel
-                                key={`${currentPage}-${panel.id}`} // Unique key for each panel based on the current page and panel id
+                                key={`${currentPage}-${panel.id}`}
                                 id={panel.id}
                                 initialContent={panel.content}
                                 initialImageUrl={panel.imageUrl || '/assets/landscape.webp'}
+                                title={title as string} // Pass the title
+                                storyId={storyId as string} // Pass the storyId
                                 onSave={handleSavePanelData}
                             />
                         ))}

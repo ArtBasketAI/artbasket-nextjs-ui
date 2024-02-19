@@ -70,10 +70,14 @@ const Navbar: React.FC<NavbarProps> = ({ breadcrumbs }) => {
                         {isDropdownOpen && (
                             <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">
                                 <Link href="/profile" passHref>
-                                    <span className="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-gray-100 cursor-pointer">Profile</span>
+                                    <span className="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-gray-100 cursor-pointer">
+                                        Profile
+                                    </span>
                                 </Link>
                                 <Link href="/settings" passHref>
-                                    <span className="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-gray-100 cursor-pointer">Settings</span>
+                                    <span className="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-gray-100 cursor-pointer">
+                                        Settings
+                                    </span>
                                 </Link>
                                 <span onClick={handleLogout} className="block px-4 py-2 text-sm capitalize text-gray-700 hover:bg-gray-100 cursor-pointer">Logout</span>
                             </div>
