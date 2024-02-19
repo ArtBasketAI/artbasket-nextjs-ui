@@ -20,10 +20,10 @@ const CreateProjectModal = ({ isOpen, onClose }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-8 rounded-lg w-1/2 h-3/4 overflow-auto relative">
+            <div className="bg-white p-8 rounded-lg w-1/2 h-3/4 overflow-auto relative flex flex-col justify-between">
                 <h2 className="text-2xl font-bold text-center mb-4">Let&apos;s Create Something Amazing!</h2>
                 {step === 1 && (
-                    <div className="text-center">
+                    <div className="text-center flex-1 flex flex-col justify-center">
                         <Image
                             src="/assets/abdalle.png" // Replace with the path to your image
                             alt="Exciting project"
@@ -38,17 +38,23 @@ const CreateProjectModal = ({ isOpen, onClose }) => {
                             onChange={(e) => setProjectTitle(e.target.value)}
                             className="mb-4 p-2 w-full border border-gray-300 rounded"
                         />
-                        <div className="flex justify-between">
-                            <button onClick={onClose} className="bg-red-500 text-white p-2 rounded">Close</button> {/* Moved Close button */}
-                            <button onClick={() => setStep(2)} className="bg-blue-500 text-white p-2 rounded">Next</button>
-                        </div>
                     </div>
                 )}
                 {step === 2 && (
-                    <div className="text-center">
+                    <div className="text-center flex-1 flex flex-col justify-between">
+                        <div>
+                            <label htmlFor="projectTitle" className="block mb-2">Project Title:</label>
+                            <input
+                                type="text"
+                                id="projectTitle"
+                                value={projectTitle}
+                                onChange={(e) => setProjectTitle(e.target.value)}
+                                className="mb-4 p-2 w-full border border-gray-300 rounded"
+                                disabled // Disable editing in step 2
+                            />
+                        </div>
                         <label className="block mb-2">Project Type:</label>
-                        <div className="flex justify-center space-x-4 mb-4">
-                            {/* Increase image size and add hover effects */}
+                        <div className="flex justify-center space-x-4 mb-4 flex-grow items-center">
                             <div
                                 onClick={() => setProjectType('story')}
                                 className={`cursor-pointer p-4 rounded border-2 ${projectType === 'story' ? 'border-blue-700' : 'border-gray-300'} hover:border-blue-500 transition duration-300`}
@@ -83,13 +89,13 @@ const CreateProjectModal = ({ isOpen, onClose }) => {
                                 />
                             </div>
                         </div>
-                        <div className="flex justify-between">
-                            <button onClick={onClose} className="bg-red-500 text-white p-2 rounded">Close</button>
-                            <button onClick={() => setStep(1)} className="bg-gray-300 text-black p-2 rounded">Back</button> {/* Centered Back button */}
-                            <button onClick={handleCreateProject} className="bg-green-500 text-white p-2 rounded">Create</button>
-                        </div>
                     </div>
                 )}
+                <div className="flex justify-between space-x-4 mt-4"> {/* Add space between buttons */}
+                    <button onClick={onClose} className="bg-red-500 text-white p-2 rounded flex-1">Close</button>
+                    {step === 2 && <button onClick={() => setStep(1)} className="bg-gray-300 text-black p-2 rounded flex-1">Back</button>}
+                    <button onClick={step === 1 ? () => setStep(2) : handleCreateProject} className={`bg-${step === 1 ? 'blue' : 'green'}-500 text-white p-2 rounded flex-1`}>{step === 1 ? 'Next' : 'Create'}</button>
+                </div>
             </div>
         </div>
     );
