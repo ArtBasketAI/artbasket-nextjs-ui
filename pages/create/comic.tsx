@@ -20,7 +20,10 @@ const ComicCreate = () => {
 
         // Use the storyId returned from the backend
         const storyId = data.storyId;
-        router.push(`/story/details?storyId=${storyId}`);
+        router.push({
+            pathname: `/story/details`,
+            query: { storyId, title }, // Pass both storyId and title as query parameters
+        });
     };
 
     return (

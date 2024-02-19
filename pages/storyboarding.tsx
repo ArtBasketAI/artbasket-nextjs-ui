@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import StoryBoardPanel from '../components/storyboard/Panel';
+import Navbar from '../components/Navbar';
 
 interface Panel {
     id: number;
@@ -19,7 +20,9 @@ const Storyboarding = () => {
     const [currentStory, setCurrentStory] = useState<string>('');
     const router = useRouter();
 
-    const comicPages = Number(router.query.comicPages) || 10;
+    const storyId = router.query.storyId as string; // Assuming storyId is always a string
+    const title = router.query.title as string; // Assuming title is always a string
+    const comicPages = Number(router.query.comicPages) || 10; // Convert comicPages to a number with a default value
 
     useEffect(() => {
         const fetchPagesData = async () => {
@@ -74,39 +77,50 @@ const Storyboarding = () => {
     }
 
     return (
-        <div className="container mx-auto p-4">
-            <div className="flex justify-between mb-4">
-                <button onClick={handlePreviousPage} disabled={currentPage === 1} className="button">Previous Page</button>
-                <button onClick={handleNextPage} disabled={currentPage === comicPages} className="button">Next Page</button>
-            </div>
-            <div className="mb-4">
-                <h2 className="text-xl font-bold">Page Story Summary</h2>
-                <textarea
-                    className="w-full p-2 border border-gray-300 rounded"
-                    value={currentStory}
-                    onChange={(e) => setCurrentStory(e.target.value)}
-                    rows={4}
-                />
-            </div>
-            <div className="mb-4">
-                <h2 className="text-xl font-bold">Storyboard Panels</h2>
-                <div className="flex flex-wrap gap-4">
-                    {pagesData[currentPage - 1].panels.map((panel) => (
-                        <StoryBoardPanel
-                            key={`${currentPage}-${panel.id}`} // Unique key for each panel based on the current page and panel id
-                            id={panel.id}
-                            initialContent={panel.content}
-                            initialImageUrl={panel.imageUrl || '/assets/landscape.webp'}
-                            onSave={handleSavePanelData}
-                        />
-                    ))}
+        <>
+            <Navbar
+                breadcrumbs={[
+                    { label: 'Dashboard', href: '/dashboard' },
+                    { label: title, href: `/create/comic?title=${title}` },
+                    { label: 'Story Details', href: `/story/details?storyId=${storyId}&title=${title}` },
+                    { label: 'Storyboarding', href: `/storyboarding?storyId=${storyId}&title=${title}&comicPages=${comicPages}` },
+                ]}
+            />
+            <div className="container mx-auto p-4">
+                <div className="flex justify-between mb-4">
+                    <button onClick={handlePreviousPage} disabled={currentPage === 1} className="button">Previous Page</button>
+                    <button onClick={handleNextPage} disabled={currentPage === comicPages} className="button">Next Page</button>
+                </div>
+                <div className="mb-4">
+                    <h2 className="text-xl font-bold">Page Story Summary</h2>
+                    <textarea
+                        className="w-full p-2 border border-gray-300 rounded"
+                        value={currentStory}
+                        onChange={(e) => setCurrentStory(e.target.value)}
+                        rows={4}
+                    />
+                </div>
+                <div className="mb-4">
+                    <h2 className="text-xl font-bold">Storyboard Panels</h2>
+                    <div className="flex flex-wrap gap-4">
+                        {pagesData[currentPage - 1].panels.map((panel) => (
+                            <StoryBoardPanel
+                                key={`${currentPage}-${panel.id}`} // Unique key for each panel based on the current page and panel id
+                                id={panel.id}
+                                initialContent={panel.content}
+                                initialImageUrl={panel.imageUrl || '/assets/landscape.webp'}
+                                onSave={handleSavePanelData}
+                            />
+                        ))}
+                    </div>
+                </div>
+                <div className="flex justify-between">
+                    <button onClick={() => router.push(`/create/comic?title=${title}`)} className="button">Back to Comic Create</button>
+
+                    <button onClick={handleVisualize} className="button">Visualize</button>
                 </div>
             </div>
-            <div className="flex justify-between">
-                <button onClick={() => router.push('/create/comic')} className="button">Back to Comic Create</button>
-                <button onClick={handleVisualize} className="button">Visualize</button>
-            </div>
-        </div>
+        </>
     );
 };
 
