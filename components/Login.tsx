@@ -1,5 +1,6 @@
 // components/Login.tsx
 import React, { useState } from 'react';
+import { signInWithEmailPassword } from '../config/auth';
 
 const Login = ({ onLoginSuccess }) => {
     const [email, setEmail] = useState('');
@@ -11,22 +12,13 @@ const Login = ({ onLoginSuccess }) => {
         event.preventDefault();
         setIsMessageVisible(false); // Hide previous message
 
-        const response = await fetch('http://localhost:3001/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            onLoginSuccess(data.user);
-        } else {
-            setMessage(data.message || 'Login failed');
+        try {
+            const userCredential = await signInWithEmailPassword(email, password);
+            onLoginSuccess(userCredential.user);
+        } catch (error) {
+            setMessage(error.message || 'Login failed');
+            setIsMessageVisible(true);
         }
-        setIsMessageVisible(true);
     };
 
     return (

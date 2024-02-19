@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import firebase from '../config/firebase';
 import router from 'next/router';
 import CreateProjectModal from '../components/CreateProjectModal';
 import Image from 'next/image';
@@ -14,7 +14,7 @@ interface Project {
 
 const Dashboard = () => {
     const [projects, setProjects] = useState<Project[]>([]);
-    const { isLoggedIn } = useAuth();
+    const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
     // Define breadcrumbs for the Dashboard page
@@ -23,19 +23,23 @@ const Dashboard = () => {
     ];
 
     useEffect(() => {
-        const fetchProjects = async () => {
-            if (!isLoggedIn) {
-                // Redirect to login or handle the logged-out state
+        const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                setIsUserLoggedIn(true);
+                fetchProjects();
+            } else {
                 router.push('/'); // Redirect to the home page
-                return;
             }
-            const res = await fetch('http://localhost:3001/api/projects');
-            const data: Project[] = await res.json();
-            setProjects(data);
-        };
+        });
 
-        fetchProjects();
-    }, [isLoggedIn]);
+        return () => unsubscribe();
+    }, []);
+
+    const fetchProjects = async () => {
+        const res = await fetch('http://localhost:3001/api/projects');
+        const data: Project[] = await res.json();
+        setProjects(data);
+    };
 
     return (
         <>
@@ -70,7 +74,6 @@ const Dashboard = () => {
             </div>
         </>
     );
-
 };
 
 export default Dashboard;
