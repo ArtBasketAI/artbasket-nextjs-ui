@@ -4,14 +4,14 @@ import Image from 'next/image';
 
 const Profile = () => {
     const [username, setUsername] = useState('JohnDoe'); // Replace with actual username from user data
-    const [profileImageUrl, setProfileImageUrl] = useState('/assets/default-profile.png'); // Replace with actual profile image URL from user data
+    const [profileImageUrl, setProfileImageUrl] = useState('/assets/avatar.png'); // Replace with actual profile image URL from user data
 
     const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(event.target.value);
     };
 
     const handleRemoveProfileImage = () => {
-        setProfileImageUrl('/assets/default-profile.png'); // Set to default image or handle removal logic
+        setProfileImageUrl('/assets/avatar.png'); // Set to default image or handle removal logic
     };
 
     return (

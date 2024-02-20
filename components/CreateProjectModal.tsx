@@ -5,7 +5,7 @@ import Image from 'next/image';
 const CreateProjectModal = ({ isOpen, onClose }) => {
     const [step, setStep] = useState(1);
     const [projectTitle, setProjectTitle] = useState('');
-    const [projectType, setProjectType] = useState('');
+    const [projectType, setProjectType] = useState('comic');
     const router = useRouter();
 
     if (!isOpen) return null;
@@ -94,7 +94,8 @@ const CreateProjectModal = ({ isOpen, onClose }) => {
                 <div className="flex justify-between space-x-4 mt-4"> {/* Add space between buttons */}
                     <button onClick={onClose} className="bg-red-500 text-white p-2 rounded flex-1">Close</button>
                     {step === 2 && <button onClick={() => setStep(1)} className="bg-gray-300 text-black p-2 rounded flex-1">Back</button>}
-                    <button onClick={step === 1 ? () => setStep(2) : handleCreateProject} className={`bg-${step === 1 ? 'blue' : 'green'}-500 text-white p-2 rounded flex-1`}>{step === 1 ? 'Next' : 'Create'}</button>
+                    <button onClick={step === 1 ? () => setStep(2) : handleCreateProject} className={`${step === 1 ? 'bg-blue-500' : 'bg-green-500'} text-white p-2 rounded flex-1`}>{step === 1 ? 'Next' : 'Create'}</button>
+
                 </div>
             </div>
         </div>

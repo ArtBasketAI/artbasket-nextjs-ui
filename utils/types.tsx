@@ -6,14 +6,29 @@ export interface Project {
     imageUrl: string;
 }
 
+export interface StoryDetails {
+    completeStory: string;
+    characters: Character[];
+}
+
 export interface Character {
     name: string;
     bio: string;
 }
 
-export interface StoryDetails {
-    completeStory: string;
-    characters: Character[];
+export interface StoryBoardResponse {
+    pagesData: PageData[];
+}
+
+export interface PageData {
+    story: string;
+    panels: Panel[];
+}
+
+interface Panel {
+    id: number;
+    content: string;
+    imageUrl?: string;
 }
 
 export interface PanelData {
@@ -24,13 +39,3 @@ export interface PanelData {
     style: string;
     characters: string;
 }
-interface Panel {
-    id: number;
-    content: string;
-    imageUrl?: string;
-}
-export interface PageData {
-    story: string;
-    panels: Panel[];
-}
-
