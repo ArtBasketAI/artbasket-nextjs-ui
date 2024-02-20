@@ -42,6 +42,7 @@ const ComicCreate = () => {
                         onChange={(e) => setStory(e.target.value)}
                         className="w-full p-2 border border-gray-300 rounded"
                         rows={4}
+                        placeholder="Start typing your story here..."
                     />
                 </div>
                 <div className="mb-4">
@@ -57,12 +58,14 @@ const ComicCreate = () => {
                     />
                     <div className="text-center">{storySize}</div>
                 </div>
-                <button
-                    onClick={handleImagineStory}
-                    className="bg-blue-500 text-white p-2 rounded"
-                >
-                    Imagine Story
-                </button>
+                <div className="flex justify-end"> {/* Align the button to the right */}
+                    <button
+                        onClick={handleImagineStory}
+                        className="bg-blue-500 text-white p-2 rounded"
+                    >
+                        Imagine Story
+                    </button>
+                </div>
             </div>
         </>
     );

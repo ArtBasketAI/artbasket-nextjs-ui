@@ -19,11 +19,12 @@ const Storyboarding = () => {
         if (router.isReady) {
             const loadPagesData = async () => {
                 try {
-                    const data = await fetchPagesData(comicPages);
+                    const pagesData = await fetchPagesData(comicPages);
+                    const data = pagesData.pagesData
                     setPagesData(data);
                     setCurrentStory(data[currentPage - 1]?.story || '');
                 } catch (error) {
-                    console.error("Fetching pages data failed: ", error);
+                    console.error("Fetching pages data failed:", error);
                 }
             };
 
