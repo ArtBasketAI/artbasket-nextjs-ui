@@ -2,17 +2,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import StoryBoardPanel from '../components/storyboard/Panel';
 import Navbar from '../components/Navbar';
-
-interface Panel {
-    id: number;
-    content: string;
-    imageUrl?: string; // Optional if you have images
-}
-
-interface PageData {
-    story: string;
-    panels: Panel[];
-}
+import { PageData } from '../utils/types';
+import { fetchPagesData } from '../utils/api';
 
 const Storyboarding = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -20,27 +11,23 @@ const Storyboarding = () => {
     const [currentStory, setCurrentStory] = useState<string>('');
     const router = useRouter();
 
-    const storyId = router.query.storyId as string; // Assuming storyId is always a string
-    const title = router.query.title as string; // Assuming title is always a string
-    const comicPages = Number(router.query.comicPages) || 10; // Convert comicPages to a number with a default value
+    const storyId = router.query.storyId as string;
+    const title = router.query.title as string;
+    const comicPages = Number(router.query.comicPages);
 
     useEffect(() => {
-        const fetchPagesData = async () => {
-            try {
-                const response = await fetch(`http://localhost:3001/api/comic/storyboard?pages=${comicPages}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                setPagesData(data.pagesData);
-                setCurrentStory(data.pagesData[currentPage - 1]?.story || '');
-            } catch (error) {
-                console.error("Fetching pages data failed: ", error);
-            }
-        };
-
         if (router.isReady) {
-            fetchPagesData();
+            const loadPagesData = async () => {
+                try {
+                    const data = await fetchPagesData(comicPages);
+                    setPagesData(data);
+                    setCurrentStory(data[currentPage - 1]?.story || '');
+                } catch (error) {
+                    console.error("Fetching pages data failed: ", error);
+                }
+            };
+
+            loadPagesData();
         }
     }, [router.isReady, comicPages, currentPage]);
 

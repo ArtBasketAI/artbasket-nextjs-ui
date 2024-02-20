@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useState, useEffect } from 'react';
+import firebase from '../config/firebase';
 import Image from 'next/image';
 import React from 'react';
 
@@ -17,11 +17,21 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ breadcrumbs }) => {
     const router = useRouter();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const { isLoggedIn, logout } = useAuth();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [user, setUser] = useState<firebase.User | null>(null);
 
-    const handleLogout = () => {
+    useEffect(() => {
+        const unsubscribe = firebase.auth().onAuthStateChanged((currentUser) => {
+            setIsLoggedIn(!!currentUser);
+            setUser(currentUser);
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    const handleLogout = async () => {
         setIsDropdownOpen(false);
-        logout();
+        await firebase.auth().signOut();
         router.push('/');
     };
 
@@ -65,7 +75,7 @@ const Navbar: React.FC<NavbarProps> = ({ breadcrumbs }) => {
                             className="flex items-center text-white cursor-pointer"
                         >
                             <Image src="/assets/avatar.png" alt="User avatar" width={30} height={30} className="w-8 h-8 rounded-full" />
-                            <span>Username</span>
+                            <span>{user?.displayName || user?.email || 'Username'}</span>
                         </button>
                         {isDropdownOpen && (
                             <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-md shadow-xl z-20">

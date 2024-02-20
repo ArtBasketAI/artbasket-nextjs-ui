@@ -1,6 +1,8 @@
+// pages/create/comic.tsx
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Navbar from '../../components/Navbar';
+import { createComicStory } from '../../utils/api';
 
 const ComicCreate = () => {
     const [story, setStory] = useState('');
@@ -9,21 +11,17 @@ const ComicCreate = () => {
     const { title } = router.query;
 
     const handleImagineStory = async () => {
-        const response = await fetch('http://localhost:3001/api/comic/generate', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ story, length: storySize }),
-        });
-        const data = await response.json();
-
-        // Use the storyId returned from the backend
-        const storyId = data.storyId;
-        router.push({
-            pathname: `/story/details`,
-            query: { storyId, title }, // Pass both storyId and title as query parameters
-        });
+        try {
+            const data = await createComicStory(story, storySize);
+            const storyId = data.storyId;
+            router.push({
+                pathname: '/story/details',
+                query: { storyId, title },
+            });
+        } catch (error) {
+            console.error('Creating comic story failed:', error);
+            // Handle the error appropriately
+        }
     };
 
     return (

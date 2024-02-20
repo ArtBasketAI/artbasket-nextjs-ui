@@ -1,31 +1,30 @@
+// pages/story/details.tsx
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Navbar from '../../components/Navbar';
-
-interface Character {
-    name: string;
-    bio: string;
-}
+import { fetchStoryDetails } from '../../utils/api';
+import { Character } from "../../utils/types";
 
 const StoryDetails = () => {
     const [story, setStory] = useState('');
     const [characters, setCharacters] = useState<Character[]>([]);
     const [comicPages, setComicPages] = useState(10);
     const router = useRouter();
-    const { storyId, title } = router.query; 
+    const { storyId, title } = router.query;
 
     useEffect(() => {
-        // Fetch the story details from the backend
-        const fetchStoryDetails = async () => {
-            // Update the URL to include the port number and correct endpoint
-            const res = await fetch(`http://localhost:3001/api/comic/details/${storyId}`);
-            const data = await res.json();
-            setStory(data.completeStory);
-            setCharacters(data.characters);
-        };
-
         if (storyId) {
-            fetchStoryDetails();
+            const loadStoryDetails = async () => {
+                try {
+                    const data = await fetchStoryDetails(storyId as string);
+                    setStory(data.completeStory);
+                    setCharacters(data.characters);
+                } catch (error) {
+                    console.error("Failed to load story details:", error);
+                }
+            };
+
+            loadStoryDetails();
         }
     }, [storyId]);
 

@@ -1,16 +1,10 @@
+// pages/panel-editor.tsx
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Image from 'next/image';
-
-interface PanelData {
-    id: number;
-    content: string;
-    imageUrl: string;
-    tags: string;
-    style: string;
-    characters: string;
-}
+import { PanelData } from '../utils/types';
+import { fetchPanelData } from '../utils/api';
 
 const PanelEditor = () => {
     const router = useRouter();
@@ -26,22 +20,18 @@ const PanelEditor = () => {
     });
 
     useEffect(() => {
-        const fetchPanelData = async () => {
-            try {
-                const response = await fetch(`http://localhost:3001/api/panels/${id}`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                setPanelData(data);
-                console.log('Image URL:', data.imageUrl); // Log the image URL
-            } catch (error) {
-                console.error("Fetching panel data failed: ", error);
-            }
-        };
-
         if (id) {
-            fetchPanelData();
+            const loadPanelData = async () => {
+                try {
+                    const data = await fetchPanelData(id as string);
+                    setPanelData(data);
+                    console.log('Image URL:', data.imageUrl); // Log the image URL
+                } catch (error) {
+                    console.error("Fetching panel data failed: ", error);
+                }
+            };
+
+            loadPanelData();
         }
     }, [id]);
 
@@ -49,8 +39,6 @@ const PanelEditor = () => {
         console.log('Regenerate button clicked');
         // Add your logic here
     };
-
-
 
     return (
         <>

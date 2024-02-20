@@ -1,20 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
+import firebase from '../config/firebase';
 import router from 'next/router';
 import CreateProjectModal from '../components/CreateProjectModal';
 import Image from 'next/image';
 import Navbar from '../components/Navbar';
-
-// Define the shape of a project
-interface Project {
-    id: number;
-    title: string;
-    imageUrl: string;
-}
+import { fetchProjects } from '../utils/api';
+import { Project } from "../utils/types";
 
 const Dashboard = () => {
     const [projects, setProjects] = useState<Project[]>([]);
-    const { isLoggedIn } = useAuth();
+    const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
     // Define breadcrumbs for the Dashboard page
@@ -23,19 +18,22 @@ const Dashboard = () => {
     ];
 
     useEffect(() => {
-        const fetchProjects = async () => {
-            if (!isLoggedIn) {
-                // Redirect to login or handle the logged-out state
+        const unsubscribe = firebase.auth().onAuthStateChanged(async (user) => {
+            if (user) {
+                setIsUserLoggedIn(true);
+                try {
+                    const projectsData = await fetchProjects();
+                    setProjects(projectsData);
+                } catch (error) {
+                    console.error("Failed to load projects:", error);
+                }
+            } else {
                 router.push('/'); // Redirect to the home page
-                return;
             }
-            const res = await fetch('http://localhost:3001/api/projects');
-            const data: Project[] = await res.json();
-            setProjects(data);
-        };
+        });
 
-        fetchProjects();
-    }, [isLoggedIn]);
+        return () => unsubscribe();
+    }, []);
 
     return (
         <>
@@ -70,7 +68,6 @@ const Dashboard = () => {
             </div>
         </>
     );
-
 };
 
 export default Dashboard;
