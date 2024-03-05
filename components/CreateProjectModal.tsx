@@ -20,7 +20,7 @@ const CreateProjectModal = ({ isOpen, onClose }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-8 rounded-lg w-1/2 h-3/4 overflow-auto relative flex flex-col justify-between">
+            <div className="bg-white p-8 rounded-lg w-3/4 lg:w-1/2 h-3/4 overflow-auto relative flex flex-col justify-between">
                 <h2 className="text-2xl font-bold text-center mb-4">Let&apos;s Create Something Amazing!</h2>
                 {step === 1 && (
                     <div className="text-center flex-1 flex flex-col justify-center">
@@ -54,7 +54,7 @@ const CreateProjectModal = ({ isOpen, onClose }) => {
                             />
                         </div>
                         <label className="block mb-2">Project Type:</label>
-                        <div className="flex justify-center space-x-4 mb-4 flex-grow items-center">
+                        <div className="flex justify-center space-y-4 md:space-x-4 md:space-y-0 mb-4 items-center flex-col md:flex-row">
                             <div
                                 onClick={() => setProjectType('story')}
                                 className={`cursor-pointer p-4 rounded border-2 ${projectType === 'story' ? 'border-blue-700' : 'border-gray-300'} hover:border-blue-500 transition duration-300`}
