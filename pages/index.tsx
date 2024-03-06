@@ -25,8 +25,8 @@ const Home = () => {
     return (
         <>
             <Navbar />
-            <div className="flex justify-center items-center min-h-screen">
-                <div className="max-w-md mr-10">
+            <div className="flex justify-center items-center md:min-h-screen flex-col md:flex-row">
+                <div className="max-w-md py-10 md:py-0 md:mr-10">
                     <h1 className="text-4xl font-bold text-center">Welcome to ArtBasketAI</h1>
                     <p className="text-center mt-4">Your co-pilot for streamlining content creation.</p>
                 </div>

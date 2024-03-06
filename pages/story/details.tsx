@@ -52,7 +52,7 @@ const StoryDetails = () => {
                     </div>
                     <div className="w-1/3">
                         <h2 className="text-xl font-bold mb-4">Characters</h2>
-                        <div className="tabs flex space-x-2 mb-4">
+                        <div className="tabs flex mb-4 flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0">
                             {characters.map((character, index) => (
                                 <button
                                     key={index}
