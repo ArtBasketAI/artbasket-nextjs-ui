@@ -62,24 +62,26 @@ const Home = () => {
     return (
         <>
             {/* Background - seems to not be working */}
-            <div className="fixed top-0 left-0 w-full h-full bg-[url('/assets/artbasket-background.webp')] bg-cover backdrop-blur-2xl -z-10"></div>
+            <div className="fixed top-0 left-0 w-full h-full bg-[linear-gradient(rgba(255,255,255,0.5),rgba(255,255,255,0.5)),url('/assets/artbasket-background.webp')] bg-cover -z-10"></div>
 
             {/* Content */}
             <div className="relative z-10">
                 <Navbar />
-                <div className="flex justify-center items-center md:min-h-screen flex-col md:flex-row">
-                    <div className="max-w-md py-10 md:py-0 md:mr-10">
-                        <h1 className="text-4xl font-bold text-center">Welcome to ArtBasketAI</h1>
-                        <p className="text-center mt-4">Your co-pilot for streamlining content creation.</p>
+                <main className="pt-[4rem]">
+                    <div className="flex justify-center items-center md:min-h-screen flex-col md:flex-row">
+                        <div className="max-w-md py-10 md:py-0 md:mr-10">
+                            <h1 className="text-4xl font-bold text-center">Welcome to ArtBasketAI</h1>
+                            <p className="text-center mt-4">Your co-pilot for streamlining content creation.</p>
+                        </div>
+                        <Login onEmailPasswordLogin={handleEmailPasswordLogin} onLoginSuccess={handleLoginSuccess} />
                     </div>
-                    <Login onEmailPasswordLogin={handleEmailPasswordLogin} onLoginSuccess={handleLoginSuccess} />
-                </div>
-                {/* Project Carousels */}
-                <div className="container mx-auto px-4">
-                    <ProjectCarousel title="Most Popular" projects={dummyProjects} />
-                    <ProjectCarousel title="Most Viewed" projects={dummyProjects} />
-                    <ProjectCarousel title="Recently Created" projects={dummyProjects} />
-                </div>
+                    {/* Project Carousels */}
+                    <div className="container mx-auto px-4">
+                        <ProjectCarousel title="Most Popular" projects={dummyProjects} />
+                        <ProjectCarousel title="Most Viewed" projects={dummyProjects} />
+                        <ProjectCarousel title="Recently Created" projects={dummyProjects} />
+                    </div>
+                </main>
             </div>
         </>
     );
