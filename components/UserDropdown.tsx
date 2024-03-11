@@ -2,15 +2,18 @@
 import Link from 'next/link';
 import { useState, useContext } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { AuthContext } from '../context/AuthContext';
 
 const UserDropdown = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const { user, logout } = useContext(AuthContext) || {};
+    const router = useRouter(); // Add this line
 
     const handleLogout = async () => {
         if (logout) {
             await logout();
+            router.push('/'); // Redirect to the root page after logout
         }
     };
 
