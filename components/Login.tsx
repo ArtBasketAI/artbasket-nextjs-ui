@@ -50,8 +50,8 @@ const Login: React.FC<LoginProps> = ({ onEmailPasswordLogin, onLoginSuccess }) =
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen py-2">
-            <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <div className="flex flex-col items-center justify-center py-2">
+            <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mx-4">
                 <h1 className="text-4xl font-bold text-center mb-4">Login to ArtBasketAI</h1>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
