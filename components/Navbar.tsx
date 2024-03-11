@@ -1,9 +1,10 @@
+// components/Navbar.tsx
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
-import firebase from '../config/firebase';
+import { useState, useContext } from 'react';
 import Image from 'next/image';
 import React from 'react';
+import { AuthContext } from '../context/AuthContext';
 
 interface Breadcrumb {
     label: string;
@@ -17,23 +18,16 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ breadcrumbs }) => {
     const router = useRouter();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [user, setUser] = useState<firebase.User | null>(null);
-
-    useEffect(() => {
-        const unsubscribe = firebase.auth().onAuthStateChanged((currentUser) => {
-            setIsLoggedIn(!!currentUser);
-            setUser(currentUser);
-        });
-
-        return () => unsubscribe();
-    }, []);
+    const { isLoggedIn, user, logout } = useContext(AuthContext) || {};
 
     const handleLogout = async () => {
         setIsDropdownOpen(false);
-        await firebase.auth().signOut();
+        if (logout) {
+            await logout();
+        }
         router.push('/');
     };
+
 
     return (
         <nav className={`${isLoggedIn ? 'bg-gray-800' : 'bg-white'} shadow-md p-4`}>
