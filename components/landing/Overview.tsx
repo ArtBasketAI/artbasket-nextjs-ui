@@ -4,16 +4,22 @@ import ArtbasketIcon from "../misc/ArtbasketIcon";
 const Overview = () => {
   return (
     <div className="relative max-w-7xl mx-auto mt-10 flex flex-col md:flex-row items-center gap-8 px-4 lg:px-8">
-      {/* Background image with heavy blur */}
-      <div className="absolute top-0 left-0 w-full h-full bg-[url('/assets/asrtbasket-background.webp')] bg-cover bg-fixed bg-center blur-3xl"></div>
-
       {/* Content */}
       <div className="flex-1 z-10">
         <h1 className="text-4xl font-bold text-left">Welcome to ArtbasketAI</h1>
-        <p className="mt-4 text-left">
-          Let's get started with the AI tools to create content like text,
-          comics, and videos faster and less tedious.
-        </p>
+        <br />
+        <h2 className="text-2xl text-left">Unleash Your Creativity</h2>
+        <br />
+        <ul className="list-disc list-inside">
+          <li>
+            Artbasket.ai is your ultimate destination for creating, sharing, and
+            exploring the world of comics.
+          </li>
+          <li>
+            Let's help you get started with the AI tools to create content like
+            text, comics, and videos faster and less tedious.
+          </li>
+        </ul>
       </div>
       <div className="flex-1 max-w-md bg-white shadow-lg rounded-lg p-6 z-10">
         <h2 className="text-2xl font-bold flex items-center gap-2">
@@ -43,7 +49,7 @@ const Overview = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white p-2 rounded-md"
+            className="w-full p-2 bg-gray-700 text-white rounded-md transition duration-300 ease-in-out hover:bg-gray-800"
           >
             Sign me up!!
           </button>
