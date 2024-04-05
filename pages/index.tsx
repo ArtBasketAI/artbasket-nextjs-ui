@@ -4,6 +4,7 @@ import Overview from "../components/landing/Overview";
 import Features from "../components/landing/Features";
 import About from "../components/landing/About";
 import Contact from "../components/landing/Contact";
+import ScrollToTopButton from "../components/ScrollToTopButton";
 
 const Home = () => {
   return (
@@ -24,6 +25,7 @@ const Home = () => {
           </section>
         </main>
       </Navbar>
+      <ScrollToTopButton />
     </>
   );
 };
