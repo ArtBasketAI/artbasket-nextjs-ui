@@ -1,5 +1,4 @@
 // components/Navbar.tsx
-import { useRouter } from "next/router";
 import { useContext, ReactNode } from "react";
 import React from "react";
 import { AuthContext } from "../context/AuthContext";
@@ -18,7 +17,6 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ breadcrumbs, children }) => {
-  const router = useRouter();
   const { isLoggedIn } = useContext(AuthContext) || {};
 
   return (
@@ -26,10 +24,10 @@ const Navbar: React.FC<NavbarProps> = ({ breadcrumbs, children }) => {
       <nav
         className={`${
           isLoggedIn ? "bg-gray-800" : "bg-white"
-        } shadow-md p-4 fixed top-0 left-0 w-full z-50`}
+        } shadow-md p-4 fixed top-0 left-0 w-full z-50 flex items-center`}
       >
-        <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <div className="flex space-x-4">
+        <div className="max-w-6xl mx-auto w-full flex justify-between items-center">
+          <div className="flex items-center space-x-4">
             {isLoggedIn && breadcrumbs ? (
               <BreadcrumbNav breadcrumbs={breadcrumbs} />
             ) : (

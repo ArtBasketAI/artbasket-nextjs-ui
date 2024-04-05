@@ -2,9 +2,12 @@
 import Link from "next/link";
 import React from "react";
 
+import ArtbasketIcon from "./misc/ArtbasketIcon";
+
 const DefaultNavLinks = () => {
   return (
     <>
+      <ArtbasketIcon />
       <Link href="/" passHref>
         <span className="text-gray-800 font-bold cursor-pointer">
           <strong>ArtbasketAI</strong>

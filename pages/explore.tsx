@@ -60,8 +60,8 @@ const Explore = () => {
 
   return (
     <>
-      {/* Background - seems to not be working */}
-      <div className="fixed top-0 left-0 w-full h-full bg-[linear-gradient(rgba(255,255,255,0.5),rgba(255,255,255,0.5)),url('/assets/artbasket-background.webp')] bg-cover -z-10"></div>
+      {/* Background */}
+      <div className="fixed top-0 left-0 w-full h-full bg-[linear-gradient(rgba(255,255,255,0.5),rgba(255,255,255,0.5)),url('/assets/artbasket-background.webp')] bg-cover blur-2xl -z-10"></div>
 
       {/* Content */}
       <div className="relative z-10">
