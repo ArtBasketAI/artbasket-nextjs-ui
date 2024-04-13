@@ -1,8 +1,8 @@
-// components/misc/ArtbasketIcon.tsx
+// components/misc/WebsiteLogo.tsx
 import Image from "next/image";
 import Link from "next/link";
 
-const ArtbasketIcon = () => {
+const WebsiteLogo = () => {
   return (
     <span>
       <Link href="/" passHref>
@@ -11,10 +11,11 @@ const ArtbasketIcon = () => {
           alt="ArtbasketAI"
           width={32}
           height={32}
+          priority
         />
       </Link>
     </span>
   );
 };
 
-export default ArtbasketIcon;
+export default WebsiteLogo;

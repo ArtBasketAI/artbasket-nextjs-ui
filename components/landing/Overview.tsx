@@ -1,5 +1,5 @@
 // components/landing/Overview.tsx
-import ArtbasketIcon from "../misc/ArtbasketIcon";
+import WebsiteLogo from "../misc/WebsiteLogo";
 
 const Overview = () => {
   return (
@@ -23,7 +23,7 @@ const Overview = () => {
       </div>
       <div className="flex-1 max-w-md bg-white shadow-lg rounded-lg p-6 z-10">
         <h2 className="text-2xl font-bold flex items-center gap-2">
-          <ArtbasketIcon /> ArtbasketAI
+          <WebsiteLogo /> ArtbasketAI
         </h2>
         <h3 className="text-2xl mt-4">
           Get notified when we launch to public use
